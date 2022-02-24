@@ -1,7 +1,8 @@
 import React from "react";
-import { Input, InputLabel, SelectProvince } from "../../../../components";
+import { InputLabel, SelectProvince } from "../../../../components";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { setApplicantName, setProvince } from "../../reducer/mainFormSlice";
+import { setProvince } from "../../reducer/mainFormSlice";
+import TextField from "../TextField/TextField";
 
 const Component1 = () => {
   const form = useAppSelector((state) => state.mainForm);
@@ -10,19 +11,12 @@ const Component1 = () => {
   return (
     <div className="flex">
       <div className="w-1/5 pl-5">
-        <InputLabel>Applicant Name</InputLabel>
-        <Input
-          type="text"
-          value={form.applicantName}
-          onChange={(e) => {
-            dispatch(setApplicantName(e.target.value));
-          }}
-        />
+        <TextField label="Applicant Name" name="applicantName" />
       </div>
       <div className="w-1/5 pl-5">
         <InputLabel>Select Province</InputLabel>
         <SelectProvince
-          value={form.province?.id || ""}
+          value={form.provinceId || ""}
           onChange={(province) => {
             if (province) {
               dispatch(setProvince(province));

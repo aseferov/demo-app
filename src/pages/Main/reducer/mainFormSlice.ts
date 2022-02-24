@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProvinceEntity } from "../../../services/ProvinceService";
-import { RootState } from "../../../store";
 import { VehicleMakeEntity } from "../../../services/VehicleMakeService";
 
 export type MainFormState = {
@@ -8,9 +7,9 @@ export type MainFormState = {
   applicantBirthDate: string;
   passport: string;
   drivingLicense: string;
-  vehicleMake: null | VehicleMakeEntity;
-  province: null | ProvinceEntity;
-  ontarioId: null | string;
+  vehicleMakeId: string;
+  provinceId: string;
+  ontarioId: string;
 };
 
 const initialState: MainFormState = {
@@ -18,36 +17,27 @@ const initialState: MainFormState = {
   applicantBirthDate: "",
   passport: "",
   drivingLicense: "",
-  vehicleMake: null,
-  province: null,
-  ontarioId: null,
+  vehicleMakeId: "",
+  provinceId: "",
+  ontarioId: "",
 };
 
 export const mainFormSlice = createSlice({
   name: "mainForm",
   initialState,
   reducers: {
-    setApplicantName: (state, action: PayloadAction<string>) => {
-      state.applicantName = action.payload;
-    },
-    setApplicantBirthDate: (state, action: PayloadAction<string>) => {
-      state.applicantBirthDate = action.payload;
-    },
     setProvince: (state, action: PayloadAction<ProvinceEntity>) => {
-      state.province = action.payload;
-      state.ontarioId = null;
+      state.provinceId = action.payload.id.toString();
+      state.ontarioId = "";
     },
     setVehicleMake: (state, action: PayloadAction<VehicleMakeEntity>) => {
-      state.vehicleMake = action.payload;
+      state.vehicleMakeId = action.payload.id.toString();
     },
-    setOntarioId: (state, action: PayloadAction<string>) => {
-      state.ontarioId = action.payload;
-    },
-    setPassport: (state, action: PayloadAction<string>) => {
-      state.passport = action.payload;
-    },
-    setDrivingLicense: (state, action: PayloadAction<string>) => {
-      state.drivingLicense = action.payload;
+    setTextField: (
+      state,
+      action: PayloadAction<{ field: keyof MainFormState; value: string }>
+    ) => {
+      state[action.payload.field] = action.payload.value;
     },
     update: (state, action: PayloadAction<Partial<MainFormState>>) => {
       return { ...state, ...action.payload };
@@ -55,19 +45,7 @@ export const mainFormSlice = createSlice({
   },
 });
 
-export const {
-  setApplicantName,
-  setProvince,
-  setOntarioId,
-  setApplicantBirthDate,
-  setVehicleMake,
-  setDrivingLicense,
-  setPassport,
-  update,
-} = mainFormSlice.actions;
-
-export const isOntario = (state: RootState) =>
-  state.mainForm.province &&
-  state.mainForm.province.name.toLowerCase() === "ontario";
+export const { setProvince, setTextField, setVehicleMake, update } =
+  mainFormSlice.actions;
 
 export default mainFormSlice.reducer;

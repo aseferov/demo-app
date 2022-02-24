@@ -12,7 +12,7 @@ const Component2 = () => {
       <div className="w-1/5 pl-5">
         <InputLabel>Select Make</InputLabel>
         <SelectVehicleMake
-          value={form.vehicleMake?.id || ""}
+          value={form.vehicleMakeId || ""}
           onChange={(make) => {
             if (make) {
               dispatch(setVehicleMake(make));
